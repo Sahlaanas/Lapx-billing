@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LAP-X Billing Software</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #d32f2f; --red-dark: #b71c1c; --red-light: #ffebee;
+      --navy: #1a1a2e;
+      --green: #2e7d32; --green-light: #e8f5e9;
+      --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1; --gray-400: #94a3b8; --gray-500: #64748b;
+      --gray-600: #475569; --gray-700: #334155; --gray-800: #1e293b; --gray-900: #0f172a;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: #eef0f5; min-height: 100vh; }
+
+    /* TOPBAR */
+    .topbar {
+      background: var(--navy); border-bottom: 3px solid var(--red);
+      padding: 0 18px; height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 200;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-ls { background: var(--red); color: #fff; font-weight: 800; font-size: 14px; padding: 4px 9px; border-radius: 6px; }
+    .brand-title { color: #fff; font-size: 15px; font-weight: 700; }
+    .brand-sub { color: #888; font-size: 10px; }
+    .topbar-right { display: flex; align-items: center; gap: 8px; }
+
+    .btype-grp { display: flex; background: rgba(255,255,255,0.08); border-radius: 8px; padding: 3px; gap: 2px; }
+    .btype-btn {
+      border: none; background: transparent; cursor: pointer; padding: 5px 12px;
+      border-radius: 6px; font-size: 12px; font-weight: 600; color: #aaa;
+      font-family: 'DM Sans', sans-serif; transition: all 0.15s;
+    }
+    .btype-btn.active { background: var(--red); color: #fff; }
+    .btype-btn:not(.active):hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+    .view-toggle { display: flex; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; overflow: hidden; }
+    .vtab {
+      border: none; background: transparent; cursor: pointer; padding: 6px 15px;
+      font-size: 12px; font-weight: 600; color: #aaa; font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s; border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .vtab:last-child { border-right: none; }
+    .vtab.active { background: #fff; color: var(--navy); }
+
+    .print-btn {
+      background: var(--red); border: none; color: #fff; padding: 7px 16px;
+      border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; transition: background 0.15s;
+    }
+    .print-btn:hover { background: var(--red-dark); }
+
+    /* LAYOUT */
+    .layout { display: flex; min-height: calc(100vh - 56px); }
+    .form-col {
+      width: 510px; flex-shrink: 0; background: #fff;
+      border-right: 1px solid var(--gray-200);
+      overflow-y: auto; height: calc(100vh - 56px); padding: 16px;
+    }
+    .preview-col {
+      flex: 1; background: #dde1ea; overflow-y: auto;
+      height: calc(100vh - 56px); padding: 22px;
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+    }
+
+    /* CARDS */
+    .card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 13px 14px; margin-bottom: 11px; }
+    .card-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .card-title { font-size: 10px; font-weight: 800; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
+    .cicon { width: 21px; height: 21px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+
+    /* FORM */
+    .frow { display: grid; gap: 8px; margin-bottom: 8px; }
+    .c2 { grid-template-columns: 1fr 1fr; }
+    .c3 { grid-template-columns: 1fr 1fr 1fr; }
+    .fld label { display: block; font-size: 9px; font-weight: 800; color: var(--gray-400); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .fld input, .fld select, .fld textarea {
+      width: 100%; border: 1.5px solid var(--gray-200); border-radius: 7px;
+      padding: 7px 10px; font-size: 13px; font-family: 'DM Sans', sans-serif;
+      color: var(--gray-800); background: #fff; outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .fld input:focus, .fld select:focus, .fld textarea:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(211,47,47,0.07); }
+    .fld textarea { resize: vertical; min-height: 65px; }
+    .readonly { background: var(--gray-50) !important; color: var(--red) !important; font-weight: 700 !important; }
+
+    /* ITEMS */
+    .items-hdr {
+      display: grid; grid-template-columns: 24px 1fr 54px 80px 58px 65px 24px;
+      gap: 4px; padding-bottom: 5px; border-bottom: 2px solid var(--gray-200); margin-bottom: 6px;
+      font-size: 8px; font-weight: 800; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .item-row { display: grid; grid-template-columns: 24px 1fr 54px 80px 58px 65px 24px; gap: 4px; margin-bottom: 5px; align-items: center; }
+    .item-num { height: 29px; width: 24px; background: var(--red-light); border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: var(--red); }
+    .ii { border: 1.5px solid var(--gray-200); border-radius: 6px; padding: 5px 7px; font-size: 11px; font-family: 'DM Sans', sans-serif; color: var(--gray-800); background: #fff; outline: none; width: 100%; transition: border-color 0.15s; }
+    .ii:focus { border-color: var(--red); }
+    .ii.r { text-align: right; }
+    .iamt { height: 29px; display: flex; align-items: center; justify-content: flex-end; font-size: 11px; font-weight: 700; color: var(--gray-800); }
+    .del-btn { width: 25px; height: 25px; border: 1.5px solid var(--gray-200); background: #fff; border-radius: 5px; cursor: pointer; font-size: 14px; color: var(--gray-300); display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+    .del-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-light); }
+    .add-btn { width: 100%; margin-top: 4px; padding: 8px; border: 1.5px dashed var(--gray-300); border-radius: 8px; background: transparent; cursor: pointer; font-size: 12px; font-weight: 600; color: var(--red); font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+    .add-btn:hover { background: var(--red-light); border-color: var(--red); }
+
+    /* TOTALS */
+    .tbox { background: #fff; border: 1px solid var(--gray-200); border-radius: 8px; overflow: hidden; }
+    .trow { display: flex; justify-content: space-between; padding: 7px 13px; font-size: 12px; color: var(--gray-600); border-bottom: 1px solid var(--gray-100); }
+    .trow:last-child { border-bottom: none; }
+    .trow.grand { background: var(--navy); color: #fff; font-size: 14px; font-weight: 800; }
+    .trow.paid { background: var(--green-light); color: var(--green); font-weight: 700; }
+    .trow.bal { background: var(--red-light); color: var(--red); font-weight: 700; }
+    .trow.disc { color: var(--green); }
+    .tval { font-weight: 700; }
+
+    .lbtn { background: none; border: none; cursor: pointer; font-size: 11px; color: var(--red); font-family: 'DM Sans', sans-serif; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+    .lbtn:hover { background: var(--red-light); }
+
+    /* ── INVOICE ── */
+    .invoice { background: #fff; width: 710px; box-shadow: 0 8px 40px rgba(0,0,0,0.14); border-radius: 4px; overflow: hidden; }
+    .inv-hd { background: var(--navy); display: flex; align-items: stretch; min-height: 110px; }
+    .inv-redbar { width: 9px; background: var(--red); flex-shrink: 0; }
+    .inv-hcnt { flex: 1; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .inv-ls { background: var(--red); color: #fff; font-weight: 800; font-size: 18px; padding: 3px 9px; border-radius: 5px; display: inline-block; margin-bottom: 4px; }
+    .inv-sname { color: #fff; font-size: 18px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
+    .inv-stagline { color: var(--red); font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 2px; }
+    .inv-contact { color: #999; font-size: 10px; margin-top: 5px; line-height: 1.9; }
+    .inv-dr { text-align: right; }
+    .inv-title { font-size: 28px; font-weight: 900; color: #fff; letter-spacing: -1px; text-transform: uppercase; }
+    .inv-no { color: var(--red); font-size: 13px; font-weight: 700; margin-top: 2px; }
+    .inv-meta { color: #aaa; font-size: 10px; margin-top: 3px; line-height: 1.9; }
+    .inv-chip { display: inline-block; margin-top: 5px; padding: 3px 10px; border-radius: 20px; font-size: 9px; font-weight: 700; text-transform: uppercase; }
+    .chip-service { background: rgba(211,47,47,0.2); color: #ff8a80; }
+    .chip-sales   { background: rgba(46,125,50,0.2);  color: #69f0ae; }
+    .chip-mixed   { background: rgba(21,101,192,0.2); color: #82b1ff; }
+
+    .inv-body { padding: 22px 26px; }
+    .inv-igrid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin-bottom: 18px; }
+    .inv-ibox { border: 1px solid var(--gray-200); border-radius: 8px; padding: 11px 13px; background: var(--gray-50); }
+    .inv-ibox.full { grid-column: 1/-1; }
+    .inv-ilbl { font-size: 8px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--red); margin-bottom: 6px; padding-bottom: 5px; border-bottom: 2px solid var(--red-light); }
+    .inv-iname { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 2px; }
+    .inv-idet { font-size: 10px; color: var(--gray-500); line-height: 1.9; }
+    .dev-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+    .dkey { font-size: 8px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; }
+    .dval { font-size: 11px; color: var(--gray-800); font-weight: 600; margin-top: 1px; }
+
+    .inv-tbl { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+    .inv-tbl thead tr { background: var(--navy); }
+    .inv-tbl th { padding: 8px 9px; text-align: left; font-size: 8px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+    .inv-tbl th.r { text-align: right; }
+    .inv-tbl td { padding: 8px 9px; font-size: 11px; color: var(--gray-700); border-bottom: 1px solid var(--gray-100); }
+    .inv-tbl td.r { text-align: right; }
+    .inv-tbl tr:nth-child(even) td { background: #fafafa; }
+    .inv-tbl tr:last-child td { border-bottom: none; }
+    .iname { font-weight: 600; color: var(--gray-900); }
+
+    .inv-tw { display: flex; justify-content: flex-end; margin-bottom: 18px; }
+    .inv-tots { width: 255px; border: 1px solid var(--gray-200); border-radius: 8px; overflow: hidden; }
+    .inv-tr { display: flex; justify-content: space-between; padding: 7px 13px; font-size: 11px; color: var(--gray-600); border-bottom: 1px solid var(--gray-100); }
+    .inv-tr:last-child { border-bottom: none; }
+    .inv-tr.grand { background: var(--navy); color: #fff; font-size: 14px; font-weight: 800; }
+    .inv-tr.paid  { background: var(--green-light); color: var(--green); font-weight: 700; }
+    .inv-tr.bal   { background: var(--red-light); color: var(--red); font-weight: 700; }
+    .inv-tr.disc  { color: var(--green); }
+
+    .inv-foot { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 15px; border-top: 1px solid var(--gray-200); }
+    .inv-nlbl { font-size: 8px; font-weight: 800; color: var(--red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .inv-ntxt { font-size: 10px; color: var(--gray-500); line-height: 1.8; max-width: 320px; }
+    .inv-sig { text-align: center; }
+    .inv-sigl { width: 135px; border-top: 2px solid var(--navy); margin: 30px auto 5px; }
+    .inv-sign { font-size: 11px; font-weight: 700; color: var(--gray-900); }
+    .inv-sigs { font-size: 9px; color: var(--gray-400); }
+
+    .inv-bot { background: var(--navy); padding: 8px 26px; display: flex; justify-content: space-between; align-items: center; margin-top: 18px; }
+    .inv-bl { color: #777; font-size: 9px; }
+    .inv-br { color: var(--red); font-size: 9px; font-weight: 700; letter-spacing: 1.5px; }
+
+    /* PRINT */
+    @media print {
+      .topbar, .form-col, .preview-col > *:not(.invoice) { display: none !important; }
+      body, .preview-col { background: white !important; padding: 0 !important; margin: 0 !important; height: auto !important; }
+      .preview-col { overflow: visible !important; align-items: flex-start !important; }
+      .invoice { box-shadow: none !important; width: 100% !important; border-radius: 0 !important; }
+      .inv-hd, .inv-bot, .inv-tbl thead tr, .inv-tr.grand, .inv-redbar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    /* scrollbar */
+    .form-col::-webkit-scrollbar, .preview-col::-webkit-scrollbar { width: 4px; }
+    .form-col::-webkit-scrollbar-thumb, .preview-col::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 10px; }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-ls">LS</div>
+    <div>
+      <div class="brand-title">LAP-X SOLUTIONS</div>
+      <div class="brand-sub">Billing & Invoice Software</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="btype-grp">
+      <button class="btype-btn active" id="btn-service" onclick="setBillType('service')">🔧 Service</button>
+      <button class="btype-btn" id="btn-sales"   onclick="setBillType('sales')">🛒 Sales</button>
+      <button class="btype-btn" id="btn-mixed"   onclick="setBillType('mixed')">📋 Mixed</button>
+    </div>
+    <div class="view-toggle">
+      <button class="vtab active" id="vtab-form"    onclick="setView('form')">✏️ Edit</button>
+      <button class="vtab"        id="vtab-preview" onclick="setView('preview')">👁 Preview</button>
+    </div>
+    <button class="print-btn" onclick="doPrint()">🖨️ Print / PDF</button>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- FORM COLUMN -->
+  <div class="form-col" id="form-col">
+
+    <!-- Shop Info -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title"><span class="cicon" style="background:#ffebee">🏪</span> Business Info</div>
+        <button class="lbtn" onclick="toggleShopEdit()">Edit</button>
+      </div>
+      <div id="shop-display">
+        <div style="display:flex;gap:20px;font-size:12px;color:var(--gray-500);line-height:1.9">
+          <div>
+            <div style="font-weight:800;color:var(--gray-900);font-size:14px" id="d-name">LAP-X SOLUTIONS</div>
+            <div style="color:var(--red);font-size:11px;font-weight:600" id="d-tagline">Multi Brand Laptop Service Centre</div>
+            <div id="d-addr">YMCA Road, Calicut, Kozhikode, Kerala</div>
+          </div>
+          <div>
+            <div id="d-phone">📞 8137 088990 | 9497632116</div>
+            <div id="d-email"></div>
+            <div id="d-gstin"></div>
+          </div>
+        </div>
+      </div>
+      <div id="shop-form" style="display:none">
+        <div class="frow c2">
+          <div class="fld"><label>Shop Name</label><input id="s-name" value="LAP-X SOLUTIONS" oninput="updateShop()"/></div>
+          <div class="fld"><label>Tagline</label><input id="s-tagline" value="Multi Brand Laptop Service Centre" oninput="updateShop()"/></div>
+        </div>
+        <div class="frow c2">
+          <div class="fld"><label>Address</label><input id="s-addr" value="YMCA Road, Calicut" oninput="updateShop()"/></div>
+          <div class="fld"><label>City / State</label><input id="s-city" value="Kozhikode, Kerala" oninput="updateShop()"/></div>
+        </div>
+        <div class="frow c2">
+          <div class="fld"><label>Phone 1</label><input id="s-ph1" value="8137 088990" oninput="updateShop()"/></div>
+          <div class="fld"><label>Phone 2</label><input id="s-ph2" value="9497632116" oninput="updateShop()"/></div>
+        </div>
+        <div class="frow c2">
+          <div class="fld"><label>Email (optional)</label><input id="s-email" placeholder="email@lapx.in" oninput="updateShop()"/></div>
+          <div class="fld"><label>GSTIN (optional)</label><input id="s-gstin" placeholder="32AAAAA0000A1Z5" oninput="updateShop()"/></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Invoice Details -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title"><span class="cicon" style="background:#e8f5e9">🧾</span> Invoice Details</div>
+        <span id="bill-type-badge" style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--red-light);color:var(--red)">Service Invoice</span>
+      </div>
+      <div class="frow c3">
+        <div class="fld"><label>Invoice No.</label><input id="inv-no" class="readonly" readonly/></div>
+        <div class="fld"><label>Invoice Date</label><input type="date" id="inv-date" oninput="renderPreview()"/></div>
+        <div class="fld"><label>Due Date (opt)</label><input type="date" id="inv-due" oninput="renderPreview()"/></div>
+      </div>
+    </div>
+
+    <!-- Customer -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title"><span class="cicon" style="background:#fff8e1">👤</span> Customer Details</div>
+      </div>
+      <div class="frow c2">
+        <div class="fld"><label>Customer Name *</label><input id="c-name" placeholder="Full name" oninput="renderPreview()"/></div>
+        <div class="fld"><label>Phone *</label><input id="c-phone" placeholder="Mobile number" oninput="renderPreview()"/></div>
+      </div>
+      <div class="frow c2">
+        <div class="fld"><label>Email</label><input id="c-email" placeholder="customer@email.com" oninput="renderPreview()"/></div>
+        <div class="fld"><label>Address / Area</label><input id="c-addr" placeholder="City / Area" oninput="renderPreview()"/></div>
+      </div>
+    </div>
+
+    <!-- Device (hidden for sales) -->
+    <div class="card" id="device-card">
+      <div class="card-hdr">
+        <div class="card-title"><span class="cicon" style="background:#fce4ec">💻</span> Device Details</div>
+      </div>
+      <div class="frow c2">
+        <div class="fld"><label>Brand</label><input id="d-brand" placeholder="Dell, HP, Lenovo, Apple…" oninput="renderPreview()"/></div>
+        <div class="fld"><label>Model</label><input id="d-model" placeholder="Inspiron 15, MacBook Pro…" oninput="renderPreview()"/></div>
+      </div>
+      <div class="frow c2">
+        <div class="fld"><label>Serial Number</label><input id="d-serial" placeholder="From bottom sticker" oninput="renderPreview()"/></div>
+        <div class="fld"><label>Reported Problem</label><input id="d-problem" placeholder="e.g. Screen cracked" oninput="renderPreview()"/></div>
+      </div>
+    </div>
+
+    <!-- Items -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title"><span class="cicon" style="background:#e8f5e9">📦</span> <span id="items-label">Services & Parts</span></div>
+      </div>
+      <div class="items-hdr">
+        <div>#</div><div>Description</div><div>Qty</div>
+        <div>Rate (₹)</div><div>GST %</div><div style="text-align:right">Amount</div><div></div>
+      </div>
+      <div id="items-list"></div>
+      <button class="add-btn" onclick="addItem()">＋ Add Item / Service</button>
+    </div>
+
+    <!-- Payment Summary -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title"><span class="cicon" style="background:#e3f2fd">💰</span> Payment Summary</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div>
+          <div class="frow">
+            <div class="fld"><label>Discount (₹)</label><input type="number" id="discount" placeholder="0.00" oninput="recalc()"/></div>
+          </div>
+          <div class="frow c2">
+            <div class="fld">
+              <label>Payment Mode</label>
+              <select id="pay-mode" oninput="renderPreview()">
+                <option>Cash</option><option>UPI</option><option>Card</option>
+                <option>Bank Transfer</option><option>Cheque</option><option>Credit</option>
+              </select>
+            </div>
+            <div class="fld"><label>Amount Paid (₹)</label><input type="number" id="amt-paid" placeholder="0.00" oninput="recalc()"/></div>
+          </div>
+        </div>
+        <div class="tbox">
+          <div class="trow"><span>Subtotal</span><span class="tval" id="t-sub">₹0.00</span></div>
+          <div class="trow"><span>Total GST</span><span class="tval" id="t-gst">₹0.00</span></div>
+          <div class="trow disc" id="t-disc-row" style="display:none"><span>Discount</span><span class="tval" id="t-disc">₹0.00</span></div>
+          <div class="trow grand"><span>Grand Total</span><span id="t-grand">₹0.00</span></div>
+          <div class="trow paid" id="t-paid-row" style="display:none"><span id="t-paid-lbl">Paid</span><span id="t-paid">₹0.00</span></div>
+          <div class="trow bal"  id="t-bal-row"  style="display:none"><span>Balance Due</span><span id="t-bal">₹0.00</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title"><span class="cicon" style="background:#fff8e1">📝</span> Terms & Notes</div>
+      </div>
+      <div class="fld">
+        <textarea id="notes" oninput="renderPreview()">Warranty: 30 days on replaced parts.
+No warranty on liquid damage repairs.
+Payment accepted: Cash / UPI / Bank Transfer.</textarea>
+      </div>
+    </div>
+
+  </div><!-- /form-col -->
+
+  <!-- PREVIEW COLUMN -->
+  <div class="preview-col" id="preview-col">
+    <div class="invoice" id="invoice">
+
+      <!-- Invoice Header -->
+      <div class="inv-hd">
+        <div class="inv-redbar"></div>
+        <div class="inv-hcnt">
+          <div>
+            <div class="inv-ls">LS</div>
+            <div class="inv-sname" id="inv-sname">LAP-X SOLUTIONS</div>
+            <div class="inv-stagline" id="inv-stagline">Multi Brand Laptop Service Centre</div>
+            <div class="inv-contact" id="inv-contact">
+              📍 YMCA Road, Calicut, Kozhikode, Kerala<br>
+              📞 8137 088990 | 9497632116
+            </div>
+          </div>
+          <div class="inv-dr">
+            <div class="inv-title">Invoice</div>
+            <div class="inv-no" id="inv-no-disp"></div>
+            <div class="inv-meta" id="inv-meta"></div>
+            <div class="inv-chip chip-service" id="inv-type-chip">Service Invoice</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Invoice Body -->
+      <div class="inv-body">
+
+        <!-- Info grid -->
+        <div class="inv-igrid" id="inv-igrid">
+          <div class="inv-ibox">
+            <div class="inv-ilbl">Billed To</div>
+            <div class="inv-iname" id="inv-cname">Customer Name</div>
+            <div class="inv-idet" id="inv-cdet"></div>
+          </div>
+          <div class="inv-ibox">
+            <div class="inv-ilbl">Invoice Info</div>
+            <div class="inv-idet" id="inv-info"></div>
+          </div>
+        </div>
+
+        <!-- Device row (dynamic) -->
+        <div id="inv-device-wrap"></div>
+
+        <!-- Table -->
+        <table class="inv-tbl">
+          <thead>
+            <tr>
+              <th style="width:26px">#</th>
+              <th>Description</th>
+              <th class="r" style="width:40px">Qty</th>
+              <th class="r" style="width:82px">Rate</th>
+              <th class="r" style="width:48px">GST</th>
+              <th class="r" style="width:72px">GST Amt</th>
+              <th class="r" style="width:82px">Total</th>
+            </tr>
+          </thead>
+          <tbody id="inv-tbody"></tbody>
+        </table>
+
+        <!-- Totals -->
+        <div class="inv-tw">
+          <div class="inv-tots" id="inv-tots"></div>
+        </div>
+
+        <!-- Footer -->
+        <div class="inv-foot">
+          <div>
+            <div class="inv-nlbl">Terms &amp; Notes</div>
+            <div class="inv-ntxt" id="inv-notes"></div>
+          </div>
+          <div class="inv-sig">
+            <div class="inv-sigl"></div>
+            <div class="inv-sign" id="inv-signame">LAP-X SOLUTIONS</div>
+            <div class="inv-sigs">Authorised Signatory</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="inv-bot">
+        <div class="inv-bl" id="inv-bot-l">📞 8137 088990 | 9497632116 · YMCA Road, Calicut, Kozhikode, Kerala</div>
+        <div class="inv-br">★ THANK YOU FOR YOUR BUSINESS ★</div>
+      </div>
+
+    </div><!-- /invoice -->
+  </div><!-- /preview-col -->
+</div><!-- /layout -->
+
+<script>
+// ── state ──────────────────────────────────────────────────────────
+let billType = 'service';
+let itemId = 0;
+let items = [];
+
+const SERVICE_SUGG = [
+  'Chip Level Service','Screen Replacement','Keyboard Repair','Touchpad Repair',
+  'SSD Upgrade','RAM Upgrade','OS Installation (Windows)','OS Installation (Linux)',
+  'Software Support','Data Recovery','Battery Replacement','Motherboard Repair',
+  'Charging Port Repair','DC Jack Repair','Cooling Fan Replacement',
+  'Thermal Paste Application','Virus / Malware Removal','BIOS Flashing',
+  'Hinge Repair','Speaker Replacement','Liquid Damage Repair','Network Card Repair'
+];
+const SALES_SUGG = [
+  'DDR4 RAM 8GB','DDR4 RAM 16GB','DDR5 RAM 8GB','SSD 256GB','SSD 512GB','SSD 1TB',
+  'HDD 1TB 2.5"','HDD 2TB 3.5"','Laptop Battery','Laptop Adapter 65W','Laptop Adapter 45W',
+  'USB Keyboard','USB Mouse','Wireless Mouse','HDMI Cable 1.5m','USB Hub 4-Port',
+  'Cooling Pad','Screen Guard','Laptop Bag 15.6"','Thermal Paste (tube)','CPU Fan','GPU Fan',
+  'Power Supply 450W','Cabinet Mid Tower','Processor Intel i3','Processor Intel i5','Processor AMD Ryzen 5'
+];
+const GST_RATES = [0,5,12,18,28];
+
+// ── init ────────────────────────────────────────────────────────────
+function init() {
+  // Invoice number
+  const d = new Date();
+  document.getElementById('inv-no').value =
+    `LX-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${Math.floor(Math.random()*9000+1000)}`;
+
+  // Today date
+  document.getElementById('inv-date').value = d.toISOString().split('T')[0];
+
+  addItem();
+  renderPreview();
+}
+
+// ── bill type ───────────────────────────────────────────────────────
+function setBillType(t) {
+  billType = t;
+  ['service','sales','mixed'].forEach(x => {
+    document.getElementById('btn-'+x).classList.toggle('active', x===t);
+  });
+  const labels = {service:'Service Invoice', sales:'Sales Invoice', mixed:'Tax Invoice'};
+  const colors = {service:'var(--red)', sales:'var(--green)', mixed:'var(--navy)'};
+  const bgs    = {service:'var(--red-light)', sales:'var(--green-light)', mixed:'#e3f2fd'};
+  const badge  = document.getElementById('bill-type-badge');
+  badge.textContent = labels[t];
+  badge.style.color = colors[t];
+  badge.style.background = bgs[t];
+  document.getElementById('items-label').textContent =
+    t==='service' ? 'Services & Parts' : t==='sales' ? 'Products / Items' : 'Services, Products & Parts';
+  document.getElementById('device-card').style.display = t==='sales' ? 'none' : 'block';
+  refreshItemSuggestions();
+  renderPreview();
+}
+
+// ── view ────────────────────────────────────────────────────────────
+function setView(v) {
+  document.getElementById('vtab-form').classList.toggle('active', v==='form');
+  document.getElementById('vtab-preview').classList.toggle('active', v==='preview');
+  document.getElementById('form-col').style.display    = v==='preview' ? 'none' : 'block';
+}
+
+function doPrint() {
+  setView('preview');
+  setTimeout(() => window.print(), 300);
+}
+
+// ── shop edit ───────────────────────────────────────────────────────
+let shopEditing = false;
+function toggleShopEdit() {
+  shopEditing = !shopEditing;
+  document.getElementById('shop-display').style.display = shopEditing ? 'none' : 'block';
+  document.getElementById('shop-form').style.display    = shopEditing ? 'block' : 'none';
+  document.querySelector('.lbtn').textContent = shopEditing ? '✓ Done' : 'Edit';
+  if (!shopEditing) updateShop();
+}
+function updateShop() {
+  const name    = v('s-name');
+  const tagline = v('s-tagline');
+  const addr    = v('s-addr');
+  const city    = v('s-city');
+  const ph1     = v('s-ph1');
+  const ph2     = v('s-ph2');
+  const email   = v('s-email');
+  const gstin   = v('s-gstin');
+
+  document.getElementById('d-name').textContent    = name;
+  document.getElementById('d-tagline').textContent = tagline;
+  document.getElementById('d-addr').textContent    = `${addr}, ${city}`;
+  document.getElementById('d-phone').textContent   = `📞 ${ph1}${ph2?' | '+ph2:''}`;
+  document.getElementById('d-email').textContent   = email ? `✉ ${email}` : '';
+  document.getElementById('d-gstin').textContent   = gstin ? `GSTIN: ${gstin}` : '';
+  renderPreview();
+}
+
+// ── items ───────────────────────────────────────────────────────────
+function addItem() {
+  const id = ++itemId;
+  items.push({ id, desc:'', qty:1, rate:'', gst:18 });
+  renderItems();
+}
+function removeItem(id) {
+  if (items.length === 1) return;
+  items = items.filter(i => i.id !== id);
+  renderItems();
+}
+function updateItem(id, field, val) {
+  items = items.map(i => i.id===id ? {...i, [field]: val} : i);
+  recalc();
+}
+
+function renderItems() {
+  const sugg = billType==='sales' ? SALES_SUGG : billType==='service' ? SERVICE_SUGG : [...SERVICE_SUGG,...SALES_SUGG];
+  const dl = sugg.map(s=>`<option value="${s}">`).join('');
+  const list = document.getElementById('items-list');
+  list.innerHTML = items.map((item,idx) => {
+    const amt = (parseFloat(item.qty)||0)*(parseFloat(item.rate)||0);
+    const gstAmt = amt*(parseFloat(item.gst)/100);
+    return `
+    <datalist id="sg-${item.id}">${dl}</datalist>
+    <div class="item-row">
+      <div class="item-num">${idx+1}</div>
+      <input class="ii" list="sg-${item.id}" placeholder="Description…" value="${escHtml(item.desc)}"
+        oninput="updateItem(${item.id},'desc',this.value)"/>
+      <input class="ii r" type="number" min="1" value="${item.qty}"
+        oninput="updateItem(${item.id},'qty',this.value)"/>
+      <input class="ii r" type="number" placeholder="0.00" value="${item.rate}"
+        oninput="updateItem(${item.id},'rate',this.value)"/>
+      <select class="ii" style="padding:4px" onchange="updateItem(${item.id},'gst',this.value)">
+        ${GST_RATES.map(r=>`<option value="${r}" ${r==item.gst?'selected':''}>${r}%</option>`).join('')}
+      </select>
+      <div class="iamt">${fmt(amt+gstAmt)}</div>
+      <button class="del-btn" onclick="removeItem(${item.id})">×</button>
+    </div>`;
+  }).join('');
+  recalc();
+}
+
+function refreshItemSuggestions() { renderItems(); }
+
+// ── calculations ────────────────────────────────────────────────────
+function recalc() {
+  const rows = items.map(i => {
+    const qty = parseFloat(i.qty)||0, rate = parseFloat(i.rate)||0;
+    const taxable = qty*rate;
+    const gstAmt  = taxable*(parseFloat(i.gst)/100);
+    return { taxable, gstAmt, total: taxable+gstAmt };
+  });
+  const sub   = rows.reduce((s,r)=>s+r.taxable,0);
+  const gst   = rows.reduce((s,r)=>s+r.gstAmt,0);
+  const disc  = Math.min(parseFloat(v('discount'))||0, sub+gst);
+  const grand = sub+gst-disc;
+  const paid  = parseFloat(v('amt-paid'))||0;
+  const bal   = grand-paid;
+
+  document.getElementById('t-sub').textContent   = fmt(sub);
+  document.getElementById('t-gst').textContent   = fmt(gst);
+  document.getElementById('t-grand').textContent = fmt(grand);
+
+  const discRow = document.getElementById('t-disc-row');
+  discRow.style.display = disc>0 ? 'flex' : 'none';
+  document.getElementById('t-disc').textContent  = `– ${fmt(disc)}`;
+
+  const paidRow = document.getElementById('t-paid-row');
+  paidRow.style.display = paid>0 ? 'flex' : 'none';
+  document.getElementById('t-paid-lbl').textContent = `Paid (${v('pay-mode')})`;
+  document.getElementById('t-paid').textContent  = fmt(paid);
+
+  const balRow = document.getElementById('t-bal-row');
+  balRow.style.display = paid>0 ? 'flex' : 'none';
+  document.getElementById('t-bal').textContent   = fmt(Math.max(0,bal));
+
+  renderPreview();
+}
+
+// ── preview render ──────────────────────────────────────────────────
+function renderPreview() {
+  const shop   = getShop();
+  const invNo  = v('inv-no');
+  const date   = v('inv-date');
+  const due    = v('inv-due');
+  const cname  = v('c-name')||'Customer Name';
+  const cphone = v('c-phone');
+  const cemail = v('c-email');
+  const caddr  = v('c-addr');
+  const payMode= v('pay-mode');
+  const notes  = v('notes');
+
+  const fmtDate = s => s ? new Date(s+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '';
+
+  // Header
+  document.getElementById('inv-sname').textContent   = shop.name;
+  document.getElementById('inv-stagline').textContent = shop.tagline;
+  document.getElementById('inv-signame').textContent  = shop.name;
+  document.getElementById('inv-contact').innerHTML =
+    `📍 ${shop.addr}, ${shop.city}<br>📞 ${shop.ph1}${shop.ph2?' | '+shop.ph2:''}${shop.email?' &nbsp;✉ '+shop.email:''}${shop.gstin?' | GSTIN: '+shop.gstin:''}`;
+  document.getElementById('inv-bot-l').textContent =
+    `📞 ${shop.ph1}${shop.ph2?' | '+shop.ph2:''} · ${shop.addr}, ${shop.city}`;
+
+  document.getElementById('inv-no-disp').textContent = invNo;
+  document.getElementById('inv-meta').innerHTML =
+    `Date: <strong style="color:#fff">${fmtDate(date)}</strong>${due?'<br>Due: <strong style="color:#fff">'+fmtDate(due)+'</strong>':''}`;
+
+  const chipEl = document.getElementById('inv-type-chip');
+  const labels = {service:'Service Invoice', sales:'Sales Invoice', mixed:'Tax Invoice'};
+  chipEl.textContent = labels[billType];
+  chipEl.className = `inv-chip chip-${billType}`;
+
+  // Customer
+  document.getElementById('inv-cname').textContent = cname;
+  document.getElementById('inv-cdet').innerHTML =
+    [cphone?`📞 ${cphone}`:null, cemail?`✉ ${cemail}`:null, caddr?`📍 ${caddr}`:null].filter(Boolean).join('<br>');
+
+  // Invoice info box
+  document.getElementById('inv-info').innerHTML =
+    `<strong>Invoice No:</strong> ${invNo}<br><strong>Date:</strong> ${fmtDate(date)}<br><strong>Payment:</strong> ${payMode}${due?'<br><strong>Due:</strong> '+fmtDate(due):''}`;
+
+  // Device
+  const devWrap = document.getElementById('inv-device-wrap');
+  if (billType !== 'sales') {
+    const brand = v('d-brand'), model = v('d-model'), serial = v('d-serial'), prob = v('d-problem');
+    if (brand||model||serial||prob) {
+      devWrap.innerHTML = `
+        <div class="inv-ibox full" style="margin-bottom:11px">
+          <div class="inv-ilbl">Device Details</div>
+          <div class="dev-grid">
+            ${brand ?`<div><div class="dkey">Brand</div><div class="dval">${escHtml(brand)}</div></div>`:''}
+            ${model ?`<div><div class="dkey">Model</div><div class="dval">${escHtml(model)}</div></div>`:''}
+            ${serial?`<div><div class="dkey">Serial No.</div><div class="dval">${escHtml(serial)}</div></div>`:''}
+            ${prob  ?`<div><div class="dkey">Reported Issue</div><div class="dval">${escHtml(prob)}</div></div>`:''}
+          </div>
+        </div>`;
+    } else { devWrap.innerHTML = ''; }
+  } else { devWrap.innerHTML = ''; }
+
+  // Items table
+  const rows = items.map(i => {
+    const qty = parseFloat(i.qty)||0, rate = parseFloat(i.rate)||0;
+    const taxable = qty*rate, gstAmt = taxable*(parseFloat(i.gst)/100);
+    return {...i, taxable, gstAmt, total: taxable+gstAmt};
+  });
+  const sub   = rows.reduce((s,r)=>s+r.taxable,0);
+  const gst   = rows.reduce((s,r)=>s+r.gstAmt,0);
+  const disc  = Math.min(parseFloat(v('discount'))||0, sub+gst);
+  const grand = sub+gst-disc;
+  const paid  = parseFloat(v('amt-paid'))||0;
+  const bal   = grand-paid;
+
+  document.getElementById('inv-tbody').innerHTML = rows.map((r,i)=>`
+    <tr>
+      <td style="color:#94a3b8;font-size:10px">${i+1}</td>
+      <td><span class="iname">${r.desc ? escHtml(r.desc) : '<em style="color:#ccc">—</em>'}</span></td>
+      <td class="r">${r.qty}</td>
+      <td class="r">${r.rate ? fmt(parseFloat(r.rate)) : '—'}</td>
+      <td class="r" style="color:var(--gray-400)">${r.gst}%</td>
+      <td class="r" style="color:var(--gray-500)">${r.rate ? fmt(r.gstAmt) : '—'}</td>
+      <td class="r" style="font-weight:700">${r.rate ? fmt(r.total) : '—'}</td>
+    </tr>`).join('');
+
+  // Invoice totals
+  let totsHtml = `
+    <div class="inv-tr"><span>Subtotal (excl. GST)</span><span>${fmt(sub)}</span></div>
+    <div class="inv-tr"><span>Total GST</span><span>${fmt(gst)}</span></div>
+    ${disc>0?`<div class="inv-tr disc"><span>Discount</span><span>– ${fmt(disc)}</span></div>`:''}
+    <div class="inv-tr grand"><span>Grand Total</span><span>${fmt(grand)}</span></div>
+    ${paid>0?`<div class="inv-tr paid"><span>Paid (${payMode})</span><span>${fmt(paid)}</span></div>`:''}
+    ${paid>0?`<div class="inv-tr bal"><span>Balance Due</span><span>${fmt(Math.max(0,bal))}</span></div>`:''}`;
+  document.getElementById('inv-tots').innerHTML = totsHtml;
+
+  // Notes
+  document.getElementById('inv-notes').innerHTML = escHtml(notes).replace(/\n/g,'<br>');
+}
+
+// ── helpers ─────────────────────────────────────────────────────────
+function v(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+function getShop() {
+  return {
+    name:    v('s-name')    || 'LAP-X SOLUTIONS',
+    tagline: v('s-tagline') || 'Multi Brand Laptop Service Centre',
+    addr:    v('s-addr')    || 'YMCA Road, Calicut',
+    city:    v('s-city')    || 'Kozhikode, Kerala',
+    ph1:     v('s-ph1')     || '8137 088990',
+    ph2:     v('s-ph2')     || '9497632116',
+    email:   v('s-email'),
+    gstin:   v('s-gstin'),
+  };
+}
+function fmt(n) {
+  return new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',minimumFractionDigits:2}).format(n||0);
+}
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+init();
+</script>
+</body>
+</html>
