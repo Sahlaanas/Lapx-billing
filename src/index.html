@@ -302,7 +302,6 @@
       </div>
       <div class="frow c2">
         <div class="fld"><label>Phone *</label><input id="c-phone" placeholder="Mobile number" oninput="renderPreview()"/></div>
-        <div class="fld"><label>Email</label><input id="c-email" placeholder="customer@email.com" oninput="renderPreview()"/></div>
       </div>
       <div class="frow">
         <div class="fld"><label>Place</label><input id="c-place" placeholder="City / Town / Area" oninput="renderPreview()"/></div>
@@ -499,10 +498,18 @@ const SALES_SUGG = [
 const GST_RATES = [0,5,12,18,28];
 
 // ── init ────────────────────────────────────────────────────────────
+function genInvoiceNo() {
+  const d = new Date();
+  const dateStr = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+  const storageKey = `lapx_inv_${dateStr}`;
+  let counter = parseInt(localStorage.getItem(storageKey) || '0') + 1;
+  localStorage.setItem(storageKey, counter);
+  return `LX-${dateStr}-${String(counter).padStart(2,'0')}`;
+}
+
 function init() {
   const d = new Date();
-  document.getElementById('inv-no').value =
-    `LX-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${Math.floor(Math.random()*9000+1000)}`;
+  document.getElementById('inv-no').value = genInvoiceNo();
   document.getElementById('inv-date').value = d.toISOString().split('T')[0];
   addItem();
   renderPreview();
@@ -699,11 +706,10 @@ function renderPreview() {
     addrEl.style.display = 'none';
   }
 
-  // Phone, Email, Place — in that order
+  // Phone and Place only — no email in Billed To
   document.getElementById('inv-cdet').innerHTML =
     [
       cphone ? `📞 ${escHtml(cphone)}` : null,
-      cemail ? `✉ ${escHtml(cemail)}`  : null,
       cplace ? `📍 ${escHtml(cplace)}` : null
     ].filter(Boolean).join('<br>');
 
