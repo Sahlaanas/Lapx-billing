@@ -352,7 +352,7 @@
           <div class="trow disc" id="t-disc-row" style="display:none"><span>Discount</span><span class="tval" id="t-disc">₹0.00</span></div>
           <div class="trow grand"><span>Grand Total</span><span id="t-grand">₹0.00</span></div>
           <div class="trow paid" id="t-paid-row" style="display:none"><span id="t-paid-lbl">Paid</span><span id="t-paid">₹0.00</span></div>
-          <div class="trow bal"  id="t-bal-row"  style="display:none"><span>Balance Due</span><span id="t-bal">₹0.00</span></div>
+          <div class="trow bal"  id="t-bal-row"  style="display:none"><span id="t-bal-label">Balance Due</span><span id="t-bal">₹0.00</span></div>
         </div>
       </div>
     </div>
@@ -557,7 +557,7 @@ function updateShop() {
 // ── items ───────────────────────────────────────────────────────────
 function addItem() {
   const id = ++itemId;
-  items.push({ id, desc:'', qty:1, rate:'', gst:18 });
+  items.push({ id, desc:'', qty:1, rate:'', gst:0 });
   renderItems();
 }
 function removeItem(id) {
@@ -627,7 +627,15 @@ function recalc() {
 
   const balRow = document.getElementById('t-bal-row');
   balRow.style.display = paid>0 ? 'flex' : 'none';
-  document.getElementById('t-bal').textContent   = fmt(Math.max(0,bal));
+  if (bal < 0) {
+    balRow.className = 'trow paid';
+    document.getElementById('t-bal-label').textContent = 'Balance';
+    document.getElementById('t-bal').textContent = fmt(Math.abs(bal));
+  } else {
+    balRow.className = 'trow bal';
+    document.getElementById('t-bal-label').textContent = 'Balance Due';
+    document.getElementById('t-bal').textContent = fmt(bal);
+  }
 
   renderPreview();
 }
@@ -739,7 +747,8 @@ function renderPreview() {
     ${disc>0?`<div class="inv-tr disc"><span>Discount</span><span>– ${fmt(disc)}</span></div>`:''}
     <div class="inv-tr grand"><span>Grand Total</span><span>${fmt(grand)}</span></div>
     ${paid>0?`<div class="inv-tr paid"><span>Paid (${payMode})</span><span>${fmt(paid)}</span></div>`:''}
-    ${paid>0?`<div class="inv-tr bal"><span>Balance Due</span><span>${fmt(Math.max(0,bal))}</span></div>`:''}`;
+    ${paid>0 && bal<0 ? `<div class="inv-tr paid"><span>↩ Return to Customer</span><span>${fmt(Math.abs(bal))}</span></div>`:''}
+    ${paid>0 && bal>0 ? `<div class="inv-tr bal"><span>Balance Due</span><span>${fmt(bal)}</span></div>`:''}`;
   document.getElementById('inv-tots').innerHTML = totsHtml;
 
   document.getElementById('inv-notes').innerHTML = escHtml(notes).replace(/\n/g,'<br>');
