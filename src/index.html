@@ -118,75 +118,87 @@
     .lbtn { background: none; border: none; cursor: pointer; font-size: 11px; color: var(--red); font-family: 'DM Sans', sans-serif; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
     .lbtn:hover { background: var(--red-light); }
 
-    /* ── INVOICE ── */
-    .invoice { background: #fff; width: 710px; box-shadow: 0 8px 40px rgba(0,0,0,0.14); border-radius: 4px; overflow: hidden; }
-    .inv-hd { background: var(--navy); display: flex; align-items: stretch; min-height: 110px; }
-    .inv-redbar { width: 9px; background: var(--red); flex-shrink: 0; }
+    /* ── INVOICE — printer-friendly, borders only, no heavy fills ── */
+    .invoice { background: #fff; width: 710px; box-shadow: 0 4px 24px rgba(0,0,0,0.10); border-radius: 4px; overflow: hidden; border: 1px solid #ccc; }
+
+    /* Header — white bg, just a bottom border, thin left accent line */
+    .inv-hd { background: #fff; display: flex; align-items: stretch; border-bottom: 2px solid #222; }
+    .inv-redbar { width: 5px; background: #222; flex-shrink: 0; }
     .inv-hcnt { flex: 1; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; }
-    .inv-ls { background: var(--red); color: #fff; font-weight: 800; font-size: 18px; padding: 3px 9px; border-radius: 5px; display: inline-block; margin-bottom: 4px; }
-    .inv-sname { color: #fff; font-size: 18px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
-    .inv-stagline { color: var(--red); font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 2px; }
-    .inv-contact { color: #999; font-size: 10px; margin-top: 5px; line-height: 1.9; }
+
+    /* Shop name block */
+    .inv-ls { border: 2px solid #222; color: #222; font-weight: 800; font-size: 18px; padding: 2px 9px; border-radius: 4px; display: inline-block; margin-bottom: 4px; }
+    .inv-sname { color: #111; font-size: 18px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
+    .inv-stagline { color: #555; font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 2px; }
+    .inv-contact { color: #555; font-size: 10px; margin-top: 5px; line-height: 1.9; }
+
+    /* Invoice title block */
     .inv-dr { text-align: right; }
-    .inv-title { font-size: 28px; font-weight: 900; color: #fff; letter-spacing: -1px; text-transform: uppercase; }
-    .inv-no { color: var(--red); font-size: 13px; font-weight: 700; margin-top: 2px; }
-    .inv-meta { color: #aaa; font-size: 10px; margin-top: 3px; line-height: 1.9; }
-    .inv-chip { display: inline-block; margin-top: 5px; padding: 3px 10px; border-radius: 20px; font-size: 9px; font-weight: 700; text-transform: uppercase; }
-    .chip-service { background: rgba(211,47,47,0.2); color: #ff8a80; }
-    .chip-sales   { background: rgba(46,125,50,0.2);  color: #69f0ae; }
-    .chip-mixed   { background: rgba(21,101,192,0.2); color: #82b1ff; }
+    .inv-title { font-size: 28px; font-weight: 900; color: #111; letter-spacing: -1px; text-transform: uppercase; }
+    .inv-no { color: #333; font-size: 13px; font-weight: 700; margin-top: 2px; }
+    .inv-meta { color: #555; font-size: 10px; margin-top: 3px; line-height: 1.9; }
+    .inv-chip { display: inline-block; margin-top: 5px; padding: 2px 10px; border-radius: 3px; font-size: 9px; font-weight: 700; text-transform: uppercase; border: 1px solid #333; color: #333; background: #fff; }
+    .chip-service, .chip-sales, .chip-mixed { background: #fff; color: #333; border-color: #333; }
 
-    .inv-body { padding: 22px 26px; }
+    /* Body */
+    .inv-body { padding: 20px 24px; }
     .inv-igrid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin-bottom: 18px; }
-    .inv-ibox { border: 1px solid var(--gray-200); border-radius: 8px; padding: 11px 13px; background: var(--gray-50); }
+    .inv-ibox { border: 1px solid #ccc; border-radius: 4px; padding: 10px 13px; background: #fff; }
     .inv-ibox.full { grid-column: 1/-1; }
-    .inv-ilbl { font-size: 8px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--red); margin-bottom: 6px; padding-bottom: 5px; border-bottom: 2px solid var(--red-light); }
-    .inv-iname { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 2px; }
-    /* ── NEW: customer address line directly under name ── */
-    .inv-iaddr { font-size: 11px; color: var(--gray-700); font-weight: 500; margin-bottom: 5px; line-height: 1.5; }
-    .inv-idet { font-size: 10px; color: var(--gray-500); line-height: 1.9; }
+    .inv-ilbl { font-size: 8px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #333; margin-bottom: 6px; padding-bottom: 5px; border-bottom: 1.5px solid #ccc; }
+    .inv-iname { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 2px; }
+    .inv-iaddr { font-size: 11px; color: #333; font-weight: 500; margin-bottom: 5px; line-height: 1.5; }
+    .inv-idet { font-size: 10px; color: #444; line-height: 1.9; }
     .dev-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
-    .dkey { font-size: 8px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; }
-    .dval { font-size: 11px; color: var(--gray-800); font-weight: 600; margin-top: 1px; }
+    .dkey { font-size: 8px; font-weight: 700; color: #666; text-transform: uppercase; }
+    .dval { font-size: 11px; color: #111; font-weight: 600; margin-top: 1px; }
 
-    .inv-tbl { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
-    .inv-tbl thead tr { background: var(--navy); }
-    .inv-tbl th { padding: 8px 9px; text-align: left; font-size: 8px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+    /* Table — header uses border + bold text, no dark fill */
+    .inv-tbl { width: 100%; border-collapse: collapse; margin-bottom: 14px; border: 1px solid #ccc; }
+    .inv-tbl thead tr { background: #fff; border-bottom: 2px solid #333; }
+    .inv-tbl th { padding: 8px 9px; text-align: left; font-size: 8px; font-weight: 800; color: #111; text-transform: uppercase; letter-spacing: 1px; border-right: 1px solid #ddd; }
+    .inv-tbl th:last-child { border-right: none; }
     .inv-tbl th.r { text-align: right; }
-    .inv-tbl td { padding: 8px 9px; font-size: 11px; color: var(--gray-700); border-bottom: 1px solid var(--gray-100); }
+    .inv-tbl td { padding: 8px 9px; font-size: 11px; color: #333; border-bottom: 1px solid #e8e8e8; border-right: 1px solid #e8e8e8; }
+    .inv-tbl td:last-child { border-right: none; }
     .inv-tbl td.r { text-align: right; }
-    .inv-tbl tr:nth-child(even) td { background: #fafafa; }
+    .inv-tbl tr:nth-child(even) td { background: #f9f9f9; }
     .inv-tbl tr:last-child td { border-bottom: none; }
-    .iname { font-weight: 600; color: var(--gray-900); }
+    .iname { font-weight: 600; color: #111; }
 
+    /* Totals — borders only, no colored backgrounds */
     .inv-tw { display: flex; justify-content: flex-end; margin-bottom: 18px; }
-    .inv-tots { width: 255px; border: 1px solid var(--gray-200); border-radius: 8px; overflow: hidden; }
-    .inv-tr { display: flex; justify-content: space-between; padding: 7px 13px; font-size: 11px; color: var(--gray-600); border-bottom: 1px solid var(--gray-100); }
+    .inv-tots { width: 255px; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; }
+    .inv-tr { display: flex; justify-content: space-between; padding: 7px 13px; font-size: 11px; color: #444; border-bottom: 1px solid #e8e8e8; }
     .inv-tr:last-child { border-bottom: none; }
-    .inv-tr.grand { background: var(--navy); color: #fff; font-size: 14px; font-weight: 800; }
-    .inv-tr.paid  { background: var(--green-light); color: var(--green); font-weight: 700; }
-    .inv-tr.bal   { background: var(--red-light); color: var(--red); font-weight: 700; }
-    .inv-tr.disc  { color: var(--green); }
+    /* Grand total — just bold + top border, no fill */
+    .inv-tr.grand { background: #fff; color: #111; font-size: 14px; font-weight: 800; border-top: 2px solid #333; }
+    /* Paid — dashed border left accent instead of green fill */
+    .inv-tr.paid  { background: #fff; color: #333; font-weight: 700; border-left: 3px solid #555; }
+    /* Balance due — same treatment */
+    .inv-tr.bal   { background: #fff; color: #111; font-weight: 700; border-left: 3px solid #111; }
+    .inv-tr.disc  { color: #333; }
 
-    .inv-foot { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 15px; border-top: 1px solid var(--gray-200); }
-    .inv-nlbl { font-size: 8px; font-weight: 800; color: var(--red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-    .inv-ntxt { font-size: 10px; color: var(--gray-500); line-height: 1.8; max-width: 320px; }
+    /* Footer */
+    .inv-foot { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 15px; border-top: 1px solid #ccc; }
+    .inv-nlbl { font-size: 8px; font-weight: 800; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .inv-ntxt { font-size: 10px; color: #555; line-height: 1.8; max-width: 320px; }
     .inv-sig { text-align: center; }
-    .inv-sigl { width: 135px; border-top: 2px solid var(--navy); margin: 30px auto 5px; }
-    .inv-sign { font-size: 11px; font-weight: 700; color: var(--gray-900); }
-    .inv-sigs { font-size: 9px; color: var(--gray-400); }
+    .inv-sigl { width: 135px; border-top: 1.5px solid #333; margin: 30px auto 5px; }
+    .inv-sign { font-size: 11px; font-weight: 700; color: #111; }
+    .inv-sigs { font-size: 9px; color: #666; }
 
-    .inv-bot { background: var(--navy); padding: 8px 26px; display: flex; justify-content: space-between; align-items: center; margin-top: 18px; }
-    .inv-bl { color: #777; font-size: 9px; }
-    .inv-br { color: var(--red); font-size: 9px; font-weight: 700; letter-spacing: 1.5px; }
+    /* Bottom strip — thin border instead of dark fill */
+    .inv-bot { background: #fff; border-top: 2px solid #333; padding: 8px 24px; display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+    .inv-bl { color: #555; font-size: 9px; }
+    .inv-br { color: #222; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; }
 
     /* PRINT */
     @media print {
       .topbar, .form-col, .preview-col > *:not(.invoice) { display: none !important; }
       body, .preview-col { background: white !important; padding: 0 !important; margin: 0 !important; height: auto !important; }
       .preview-col { overflow: visible !important; align-items: flex-start !important; }
-      .invoice { box-shadow: none !important; width: 100% !important; border-radius: 0 !important; }
-      .inv-hd, .inv-bot, .inv-tbl thead tr, .inv-tr.grand, .inv-redbar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .invoice { box-shadow: none !important; width: 100% !important; border-radius: 0 !important; border: none !important; }
     }
 
     .form-col::-webkit-scrollbar, .preview-col::-webkit-scrollbar { width: 4px; }
@@ -629,7 +641,7 @@ function recalc() {
   balRow.style.display = paid>0 ? 'flex' : 'none';
   if (bal < 0) {
     balRow.className = 'trow paid';
-    document.getElementById('t-bal-label').textContent = 'Balance';
+    document.getElementById('t-bal-label').textContent = '↩ Return to Customer';
     document.getElementById('t-bal').textContent = fmt(Math.abs(bal));
   } else {
     balRow.className = 'trow bal';
@@ -667,7 +679,7 @@ function renderPreview() {
 
   document.getElementById('inv-no-disp').textContent = invNo;
   document.getElementById('inv-meta').innerHTML =
-    `Date: <strong style="color:#fff">${fmtDate(date)}</strong>${due?'<br>Due: <strong style="color:#fff">'+fmtDate(due)+'</strong>':''}`;
+    `Date: <strong style="color:#111">${fmtDate(date)}</strong>${due?'<br>Due: <strong style="color:#111">'+fmtDate(due)+'</strong>':''}`;
 
   const chipEl = document.getElementById('inv-type-chip');
   const labels = {service:'Service Invoice', sales:'Sales Invoice', mixed:'Tax Invoice'};
