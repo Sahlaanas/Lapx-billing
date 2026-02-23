@@ -142,6 +142,8 @@
     .inv-ibox.full { grid-column: 1/-1; }
     .inv-ilbl { font-size: 8px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--red); margin-bottom: 6px; padding-bottom: 5px; border-bottom: 2px solid var(--red-light); }
     .inv-iname { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 2px; }
+    /* ── NEW: customer address line directly under name ── */
+    .inv-iaddr { font-size: 11px; color: var(--gray-700); font-weight: 500; margin-bottom: 5px; line-height: 1.5; }
     .inv-idet { font-size: 10px; color: var(--gray-500); line-height: 1.9; }
     .dev-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
     .dkey { font-size: 8px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; }
@@ -187,7 +189,6 @@
       .inv-hd, .inv-bot, .inv-tbl thead tr, .inv-tr.grand, .inv-redbar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
 
-    /* scrollbar */
     .form-col::-webkit-scrollbar, .preview-col::-webkit-scrollbar { width: 4px; }
     .form-col::-webkit-scrollbar-thumb, .preview-col::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 10px; }
   </style>
@@ -281,13 +282,18 @@
       <div class="card-hdr">
         <div class="card-title"><span class="cicon" style="background:#fff8e1">👤</span> Customer Details</div>
       </div>
-      <div class="frow c2">
+      <div class="frow">
         <div class="fld"><label>Customer Name *</label><input id="c-name" placeholder="Full name" oninput="renderPreview()"/></div>
-        <div class="fld"><label>Phone *</label><input id="c-phone" placeholder="Mobile number" oninput="renderPreview()"/></div>
+      </div>
+      <div class="frow">
+        <div class="fld"><label>Address</label><input id="c-addr" placeholder="House No., Street / Building name" oninput="renderPreview()"/></div>
       </div>
       <div class="frow c2">
+        <div class="fld"><label>Phone *</label><input id="c-phone" placeholder="Mobile number" oninput="renderPreview()"/></div>
         <div class="fld"><label>Email</label><input id="c-email" placeholder="customer@email.com" oninput="renderPreview()"/></div>
-        <div class="fld"><label>Address / Area</label><input id="c-addr" placeholder="City / Area" oninput="renderPreview()"/></div>
+      </div>
+      <div class="frow">
+        <div class="fld"><label>Place</label><input id="c-place" placeholder="City / Town / Area" oninput="renderPreview()"/></div>
       </div>
     </div>
 
@@ -399,6 +405,8 @@ Payment accepted: Cash / UPI / Bank Transfer.</textarea>
           <div class="inv-ibox">
             <div class="inv-ilbl">Billed To</div>
             <div class="inv-iname" id="inv-cname">Customer Name</div>
+            <!-- ── NEW: address shown prominently below name ── -->
+            <div class="inv-iaddr" id="inv-caddr"></div>
             <div class="inv-idet" id="inv-cdet"></div>
           </div>
           <div class="inv-ibox">
@@ -480,14 +488,10 @@ const GST_RATES = [0,5,12,18,28];
 
 // ── init ────────────────────────────────────────────────────────────
 function init() {
-  // Invoice number
   const d = new Date();
   document.getElementById('inv-no').value =
     `LX-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${Math.floor(Math.random()*9000+1000)}`;
-
-  // Today date
   document.getElementById('inv-date').value = d.toISOString().split('T')[0];
-
   addItem();
   renderPreview();
 }
@@ -516,9 +520,8 @@ function setBillType(t) {
 function setView(v) {
   document.getElementById('vtab-form').classList.toggle('active', v==='form');
   document.getElementById('vtab-preview').classList.toggle('active', v==='preview');
-  document.getElementById('form-col').style.display    = v==='preview' ? 'none' : 'block';
+  document.getElementById('form-col').style.display = v==='preview' ? 'none' : 'block';
 }
-
 function doPrint() {
   setView('preview');
   setTimeout(() => window.print(), 300);
@@ -542,7 +545,6 @@ function updateShop() {
   const ph2     = v('s-ph2');
   const email   = v('s-email');
   const gstin   = v('s-gstin');
-
   document.getElementById('d-name').textContent    = name;
   document.getElementById('d-tagline').textContent = tagline;
   document.getElementById('d-addr').textContent    = `${addr}, ${city}`;
@@ -567,7 +569,6 @@ function updateItem(id, field, val) {
   items = items.map(i => i.id===id ? {...i, [field]: val} : i);
   recalc();
 }
-
 function renderItems() {
   const sugg = billType==='sales' ? SALES_SUGG : billType==='service' ? SERVICE_SUGG : [...SERVICE_SUGG,...SALES_SUGG];
   const dl = sugg.map(s=>`<option value="${s}">`).join('');
@@ -594,7 +595,6 @@ function renderItems() {
   }).join('');
   recalc();
 }
-
 function refreshItemSuggestions() { renderItems(); }
 
 // ── calculations ────────────────────────────────────────────────────
@@ -634,21 +634,22 @@ function recalc() {
 
 // ── preview render ──────────────────────────────────────────────────
 function renderPreview() {
-  const shop   = getShop();
-  const invNo  = v('inv-no');
-  const date   = v('inv-date');
-  const due    = v('inv-due');
-  const cname  = v('c-name')||'Customer Name';
-  const cphone = v('c-phone');
-  const cemail = v('c-email');
-  const caddr  = v('c-addr');
-  const payMode= v('pay-mode');
-  const notes  = v('notes');
+  const shop    = getShop();
+  const invNo   = v('inv-no');
+  const date    = v('inv-date');
+  const due     = v('inv-due');
+  const cname   = v('c-name') || 'Customer Name';
+  const caddr   = v('c-addr');
+  const cphone  = v('c-phone');
+  const cemail  = v('c-email');
+  const cplace  = v('c-place');
+  const payMode = v('pay-mode');
+  const notes   = v('notes');
 
   const fmtDate = s => s ? new Date(s+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '';
 
   // Header
-  document.getElementById('inv-sname').textContent   = shop.name;
+  document.getElementById('inv-sname').textContent    = shop.name;
   document.getElementById('inv-stagline').textContent = shop.tagline;
   document.getElementById('inv-signame').textContent  = shop.name;
   document.getElementById('inv-contact').innerHTML =
@@ -663,12 +664,28 @@ function renderPreview() {
   const chipEl = document.getElementById('inv-type-chip');
   const labels = {service:'Service Invoice', sales:'Sales Invoice', mixed:'Tax Invoice'};
   chipEl.textContent = labels[billType];
-  chipEl.className = `inv-chip chip-${billType}`;
+  chipEl.className   = `inv-chip chip-${billType}`;
 
-  // Customer
+  // ── Billed To — order: Name, Address, Phone, Email, Place ──
   document.getElementById('inv-cname').textContent = cname;
+
+  // Address line directly below name
+  const addrEl = document.getElementById('inv-caddr');
+  if (caddr && caddr.trim()) {
+    addrEl.innerHTML = escHtml(caddr);
+    addrEl.style.display = 'block';
+  } else {
+    addrEl.innerHTML = '';
+    addrEl.style.display = 'none';
+  }
+
+  // Phone, Email, Place — in that order
   document.getElementById('inv-cdet').innerHTML =
-    [cphone?`📞 ${cphone}`:null, cemail?`✉ ${cemail}`:null, caddr?`📍 ${caddr}`:null].filter(Boolean).join('<br>');
+    [
+      cphone ? `📞 ${escHtml(cphone)}` : null,
+      cemail ? `✉ ${escHtml(cemail)}`  : null,
+      cplace ? `📍 ${escHtml(cplace)}` : null
+    ].filter(Boolean).join('<br>');
 
   // Invoice info box
   document.getElementById('inv-info').innerHTML =
@@ -716,7 +733,6 @@ function renderPreview() {
       <td class="r" style="font-weight:700">${r.rate ? fmt(r.total) : '—'}</td>
     </tr>`).join('');
 
-  // Invoice totals
   let totsHtml = `
     <div class="inv-tr"><span>Subtotal (excl. GST)</span><span>${fmt(sub)}</span></div>
     <div class="inv-tr"><span>Total GST</span><span>${fmt(gst)}</span></div>
@@ -726,7 +742,6 @@ function renderPreview() {
     ${paid>0?`<div class="inv-tr bal"><span>Balance Due</span><span>${fmt(Math.max(0,bal))}</span></div>`:''}`;
   document.getElementById('inv-tots').innerHTML = totsHtml;
 
-  // Notes
   document.getElementById('inv-notes').innerHTML = escHtml(notes).replace(/\n/g,'<br>');
 }
 
