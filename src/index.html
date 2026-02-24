@@ -114,33 +114,24 @@
     .trow.bal { background: var(--red-light); color: var(--red); font-weight: 700; }
     .trow.disc { color: var(--green); }
     .tval { font-weight: 700; }
-
     .lbtn { background: none; border: none; cursor: pointer; font-size: 11px; color: var(--red); font-family: 'DM Sans', sans-serif; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
     .lbtn:hover { background: var(--red-light); }
 
-    /* ── INVOICE — printer-friendly, borders only, no heavy fills ── */
+    /* INVOICE — printer-friendly, borders only */
     .invoice { background: #fff; width: 710px; box-shadow: 0 4px 24px rgba(0,0,0,0.10); border-radius: 4px; overflow: hidden; border: 1px solid #ccc; }
-
-    /* Header — white bg, just a bottom border, thin left accent line */
     .inv-hd { background: #fff; display: flex; align-items: stretch; border-bottom: 2px solid #222; }
     .inv-redbar { width: 5px; background: #222; flex-shrink: 0; }
     .inv-hcnt { flex: 1; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; }
-
-    /* Shop name block */
     .inv-ls { border: 2px solid #222; color: #222; font-weight: 800; font-size: 18px; padding: 2px 9px; border-radius: 4px; display: inline-block; margin-bottom: 4px; }
     .inv-sname { color: #111; font-size: 18px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
     .inv-stagline { color: #555; font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 2px; }
     .inv-contact { color: #555; font-size: 10px; margin-top: 5px; line-height: 1.9; }
-
-    /* Invoice title block */
     .inv-dr { text-align: right; }
     .inv-title { font-size: 28px; font-weight: 900; color: #111; letter-spacing: -1px; text-transform: uppercase; }
     .inv-no { color: #333; font-size: 13px; font-weight: 700; margin-top: 2px; }
     .inv-meta { color: #555; font-size: 10px; margin-top: 3px; line-height: 1.9; }
     .inv-chip { display: inline-block; margin-top: 5px; padding: 2px 10px; border-radius: 3px; font-size: 9px; font-weight: 700; text-transform: uppercase; border: 1px solid #333; color: #333; background: #fff; }
     .chip-service, .chip-sales, .chip-mixed { background: #fff; color: #333; border-color: #333; }
-
-    /* Body */
     .inv-body { padding: 20px 24px; }
     .inv-igrid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin-bottom: 18px; }
     .inv-ibox { border: 1px solid #ccc; border-radius: 4px; padding: 10px 13px; background: #fff; }
@@ -152,8 +143,6 @@
     .dev-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
     .dkey { font-size: 8px; font-weight: 700; color: #666; text-transform: uppercase; }
     .dval { font-size: 11px; color: #111; font-weight: 600; margin-top: 1px; }
-
-    /* Table — header uses border + bold text, no dark fill */
     .inv-tbl { width: 100%; border-collapse: collapse; margin-bottom: 14px; border: 1px solid #ccc; }
     .inv-tbl thead tr { background: #fff; border-bottom: 2px solid #333; }
     .inv-tbl th { padding: 8px 9px; text-align: left; font-size: 8px; font-weight: 800; color: #111; text-transform: uppercase; letter-spacing: 1px; border-right: 1px solid #ddd; }
@@ -165,21 +154,14 @@
     .inv-tbl tr:nth-child(even) td { background: #f9f9f9; }
     .inv-tbl tr:last-child td { border-bottom: none; }
     .iname { font-weight: 600; color: #111; }
-
-    /* Totals — borders only, no colored backgrounds */
     .inv-tw { display: flex; justify-content: flex-end; margin-bottom: 18px; }
     .inv-tots { width: 255px; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; }
     .inv-tr { display: flex; justify-content: space-between; padding: 7px 13px; font-size: 11px; color: #444; border-bottom: 1px solid #e8e8e8; }
     .inv-tr:last-child { border-bottom: none; }
-    /* Grand total — just bold + top border, no fill */
     .inv-tr.grand { background: #fff; color: #111; font-size: 14px; font-weight: 800; border-top: 2px solid #333; }
-    /* Paid — dashed border left accent instead of green fill */
     .inv-tr.paid  { background: #fff; color: #333; font-weight: 700; border-left: 3px solid #555; }
-    /* Balance due — same treatment */
     .inv-tr.bal   { background: #fff; color: #111; font-weight: 700; border-left: 3px solid #111; }
     .inv-tr.disc  { color: #333; }
-
-    /* Footer */
     .inv-foot { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 15px; border-top: 1px solid #ccc; }
     .inv-nlbl { font-size: 8px; font-weight: 800; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
     .inv-ntxt { font-size: 10px; color: #555; line-height: 1.8; max-width: 320px; }
@@ -187,22 +169,23 @@
     .inv-sigl { width: 135px; border-top: 1.5px solid #333; margin: 30px auto 5px; }
     .inv-sign { font-size: 11px; font-weight: 700; color: #111; }
     .inv-sigs { font-size: 9px; color: #666; }
-
-    /* Bottom strip — thin border instead of dark fill */
     .inv-bot { background: #fff; border-top: 2px solid #333; padding: 8px 24px; display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
     .inv-bl { color: #555; font-size: 9px; }
     .inv-br { color: #222; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; }
 
-    /* PRINT */
     @media print {
       .topbar, .form-col, .preview-col > *:not(.invoice) { display: none !important; }
       body, .preview-col { background: white !important; padding: 0 !important; margin: 0 !important; height: auto !important; }
       .preview-col { overflow: visible !important; align-items: flex-start !important; }
       .invoice { box-shadow: none !important; width: 100% !important; border-radius: 0 !important; border: none !important; }
     }
-
     .form-col::-webkit-scrollbar, .preview-col::-webkit-scrollbar { width: 4px; }
     .form-col::-webkit-scrollbar-thumb, .preview-col::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 10px; }
+    /* TOAST */
+    .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%); background:#1e293b; color:#fff; padding:12px 22px; border-radius:10px; font-size:13px; font-weight:600; box-shadow:0 4px 20px rgba(0,0,0,0.3); z-index:9999; opacity:0; transition:opacity 0.3s; pointer-events:none; }
+    .toast.show { opacity:1; pointer-events:auto; }
+    .toast.ok   { background:#2e7d32; }
+    .toast.err  { background:#c62828; }
   </style>
 </head>
 <body>
@@ -210,9 +193,10 @@
 <!-- TOPBAR -->
 <div class="topbar">
   <div class="brand">
+    
     <div>
       <div class="brand-title">LAP-X SOLUTIONS</div>
-      <div class="brand-sub">Billing & Invoice Software</div>
+      <div class="brand-sub">Billing &amp; Invoice Software</div>
     </div>
   </div>
   <div class="topbar-right">
@@ -225,7 +209,8 @@
       <button class="vtab active" id="vtab-form"    onclick="setView('form')">✏️ Edit</button>
       <button class="vtab"        id="vtab-preview" onclick="setView('preview')">👁 Preview</button>
     </div>
-    <button class="print-btn" onclick="doPrint()">🖨️ Print / PDF</button>
+    <button class="print-btn" onclick="doPrint()">🖨️ Print</button>
+    <button class="print-btn" style="background:#2e7d32" onclick="doSavePDF()">💾 Save PDF</button>
   </div>
 </div>
 
@@ -266,7 +251,7 @@
         </div>
         <div class="frow c2">
           <div class="fld"><label>Phone 1</label><input id="s-ph1" value="8137 088990" oninput="updateShop()"/></div>
-          <div class="fld"><label>Phone 2</label><input id="s-ph2" value="9497632116" oninput="updateShop()"/></div>
+          <div class="fld"><label>Phone 2</label><input id="s-ph2" value="" oninput="updateShop()"/></div>
         </div>
         <div class="frow c2">
           <div class="fld"><label>Email (optional)</label><input id="s-email" placeholder="email@lapx.in" oninput="updateShop()"/></div>
@@ -299,7 +284,7 @@
       <div class="frow">
         <div class="fld"><label>Address</label><input id="c-addr" placeholder="House No., Street / Building name" oninput="renderPreview()"/></div>
       </div>
-      <div class="frow c2">
+      <div class="frow">
         <div class="fld"><label>Phone *</label><input id="c-phone" placeholder="Mobile number" oninput="renderPreview()"/></div>
       </div>
       <div class="frow">
@@ -313,7 +298,47 @@
         <div class="card-title"><span class="cicon" style="background:#fce4ec">💻</span> Device Details</div>
       </div>
       <div class="frow c2">
-        <div class="fld"><label>Brand</label><input id="d-brand" placeholder="Dell, HP, Lenovo, Apple…" oninput="renderPreview()"/></div>
+        <div class="fld">
+          <label>Brand</label>
+          <datalist id="brand-list">
+            <option value="Acer">
+            <option value="Apple (MacBook)">
+            <option value="Asus">
+            <option value="Asus ROG">
+            <option value="Asus TUF">
+            <option value="Asus VivoBook">
+            <option value="Asus ZenBook">
+            <option value="Dell">
+            <option value="Dell Inspiron">
+            <option value="Dell Latitude">
+            <option value="Dell Vostro">
+            <option value="Dell XPS">
+            <option value="HP">
+            <option value="HP EliteBook">
+            <option value="HP Envy">
+            <option value="HP Pavilion">
+            <option value="HP ProBook">
+            <option value="HP Spectre">
+            <option value="Honor">
+            <option value="Huawei MateBook">
+            <option value="Lenovo">
+            <option value="Lenovo IdeaPad">
+            <option value="Lenovo Legion">
+            <option value="Lenovo ThinkBook">
+            <option value="Lenovo ThinkPad">
+            <option value="Lenovo Yoga">
+            <option value="LG Gram">
+            <option value="Microsoft Surface">
+            <option value="MSI">
+            <option value="Razer Blade">
+            <option value="Realme Book">
+            <option value="Samsung Galaxy Book">
+            <option value="Sony VAIO">
+            <option value="Toshiba">
+            <option value="Xiaomi Mi Notebook">
+          </datalist>
+          <input id="d-brand" list="brand-list" placeholder="Select or type brand…" oninput="renderPreview()"/>
+        </div>
         <div class="fld"><label>Model</label><input id="d-model" placeholder="Inspiron 15, MacBook Pro…" oninput="renderPreview()"/></div>
       </div>
       <div class="frow c2">
@@ -325,7 +350,7 @@
     <!-- Items -->
     <div class="card">
       <div class="card-hdr">
-        <div class="card-title"><span class="cicon" style="background:#e8f5e9">📦</span> <span id="items-label">Services & Parts</span></div>
+        <div class="card-title"><span class="cicon" style="background:#e8f5e9">📦</span> <span id="items-label">Services &amp; Parts</span></div>
       </div>
       <div class="items-hdr">
         <div>#</div><div>Description</div><div>Qty</div>
@@ -370,7 +395,7 @@
     <!-- Notes -->
     <div class="card">
       <div class="card-hdr">
-        <div class="card-title"><span class="cicon" style="background:#fff8e1">📝</span> Terms & Notes</div>
+        <div class="card-title"><span class="cicon" style="background:#fff8e1">📝</span> Terms &amp; Notes</div>
       </div>
       <div class="fld">
         <textarea id="notes" oninput="renderPreview()">Warranty: 30 days on replaced parts.
@@ -390,7 +415,6 @@ Payment accepted: Cash / UPI / Bank Transfer.</textarea>
         <div class="inv-redbar"></div>
         <div class="inv-hcnt">
           <div>
-            
             <div class="inv-sname" id="inv-sname">LAP-X SOLUTIONS</div>
             <div class="inv-stagline" id="inv-stagline">Multi Brand Laptop Service Centre</div>
             <div class="inv-contact" id="inv-contact">
@@ -411,12 +435,11 @@ Payment accepted: Cash / UPI / Bank Transfer.</textarea>
       <div class="inv-body">
 
         <!-- Info grid -->
-        <div class="inv-igrid" id="inv-igrid">
+        <div class="inv-igrid">
           <div class="inv-ibox">
             <div class="inv-ilbl">Billed To</div>
             <div class="inv-iname" id="inv-cname">Customer Name</div>
-            <!-- ── NEW: address shown prominently below name ── -->
-            <div class="inv-iaddr" id="inv-caddr"></div>
+            <div class="inv-iaddr" id="inv-caddr" style="display:none"></div>
             <div class="inv-idet" id="inv-cdet"></div>
           </div>
           <div class="inv-ibox">
@@ -463,24 +486,31 @@ Payment accepted: Cash / UPI / Bank Transfer.</textarea>
         </div>
       </div>
 
-    
+
 
     </div><!-- /invoice -->
   </div><!-- /preview-col -->
 </div><!-- /layout -->
 
+<div class="toast" id="toast"></div>
+
 <script>
-// ── state ──────────────────────────────────────────────────────────
 let billType = 'service';
 let itemId = 0;
 let items = [];
 
-const SERVICE_SUGG = ['Dead Condition','Not working',
-  'Chip Level Service','Screen Replacement','Keyboard Replacement','Touchpad not working',
-  'SSD Upgrade and Formatting','RAM Upgrade','OS Installation (Windows)','OS Installation (Linux)','Data Recovery','Battery Replacement','Motherboard Repair', 'Motherboard Replacement',
+const SERVICE_SUGG = [
+  'Dead Condition','Not working','Chip Level Service','Screen Replacement',
+  'Keyboard Replacement','Keyboard not working','Touchpad not working',
+  'SSD Upgrade and Formatting','RAM Upgrade','OS Installation (Windows)',
+  'OS Installation (Linux)','Software Support','Data Recovery','Battery Replacement',
+  'Battery not charging','Motherboard Repair','Motherboard Replacement',
   'Charging Port Repair','DC Jack Repair','Cooling Fan Replacement',
-  'Thermal Paste Application','Virus / Malware Removal','BIOS Flashing',
-  'Hinge Repair','Speaker Replacement','Liquid Damage Repair','Network Card Repair(Wifi)','Battery not charging', 'Keyboard not working', 'Screen flickering','Dim screen issue','Adapter not working', 'Restarting problem','On-off issue','CPU fan not working','Overheating issue','Blue screen error','Slow performance'
+  'CPU fan not working','Thermal Paste Application','Virus / Malware Removal',
+  'BIOS Flashing','Hinge Repair','Speaker Replacement','Liquid Damage Repair',
+  'Network Card Repair (Wifi)','Screen flickering','Dim screen issue',
+  'Adapter not working','Restarting problem','On-off issue','Overheating issue',
+  'Blue screen error','Slow performance'
 ];
 const SALES_SUGG = [
   'DDR4 RAM 8GB','DDR4 RAM 16GB','DDR5 RAM 8GB','SSD 256GB','SSD 512GB','SSD 1TB',
@@ -491,7 +521,7 @@ const SALES_SUGG = [
 ];
 const GST_RATES = [0,5,12,18,28];
 
-// ── init ────────────────────────────────────────────────────────────
+// ── Invoice number ──────────────────────────────────────────────────
 function genInvoiceNo() {
   const d = new Date();
   const dateStr = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
@@ -501,6 +531,7 @@ function genInvoiceNo() {
   return `LX-${dateStr}-${String(counter).padStart(2,'0')}`;
 }
 
+// ── Init ────────────────────────────────────────────────────────────
 function init() {
   const d = new Date();
   document.getElementById('inv-no').value = genInvoiceNo();
@@ -509,18 +540,17 @@ function init() {
   renderPreview();
 }
 
-// ── bill type ───────────────────────────────────────────────────────
+// ── Bill type ───────────────────────────────────────────────────────
 function setBillType(t) {
   billType = t;
-  ['service','sales','mixed'].forEach(x => {
-    document.getElementById('btn-'+x).classList.toggle('active', x===t);
-  });
+  ['service','sales','mixed'].forEach(x =>
+    document.getElementById('btn-'+x).classList.toggle('active', x===t));
   const labels = {service:'Service Invoice', sales:'Sales Invoice', mixed:'Tax Invoice'};
   const colors = {service:'var(--red)', sales:'var(--green)', mixed:'var(--navy)'};
   const bgs    = {service:'var(--red-light)', sales:'var(--green-light)', mixed:'#e3f2fd'};
   const badge  = document.getElementById('bill-type-badge');
-  badge.textContent = labels[t];
-  badge.style.color = colors[t];
+  badge.textContent   = labels[t];
+  badge.style.color   = colors[t];
   badge.style.background = bgs[t];
   document.getElementById('items-label').textContent =
     t==='service' ? 'Services & Parts' : t==='sales' ? 'Products / Items' : 'Services, Products & Parts';
@@ -529,7 +559,7 @@ function setBillType(t) {
   renderPreview();
 }
 
-// ── view ────────────────────────────────────────────────────────────
+// ── View ────────────────────────────────────────────────────────────
 function setView(v) {
   document.getElementById('vtab-form').classList.toggle('active', v==='form');
   document.getElementById('vtab-preview').classList.toggle('active', v==='preview');
@@ -540,7 +570,34 @@ function doPrint() {
   setTimeout(() => window.print(), 300);
 }
 
-// ── shop edit ───────────────────────────────────────────────────────
+function showToast(msg, type='ok', duration=3500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast show ${type}`;
+  setTimeout(() => t.className = 'toast', duration);
+}
+
+async function doSavePDF() {
+  if (!window.electronAPI) {
+    showToast('PDF save only works in the desktop app', 'err');
+    return;
+  }
+  const invoiceNo = document.getElementById('inv-no').value || 'Invoice';
+  showToast('Saving PDF…', 'ok', 10000);
+  const result = await window.electronAPI.savePDF(invoiceNo);
+  if (result.success) {
+    showToast(`✅ Saved: ${result.filePath}`, 'ok', 5000);
+  } else {
+    showToast(`❌ Failed: ${result.error}`, 'err', 5000);
+  }
+}
+
+// Listen for Ctrl+S from menu
+if (window.electronAPI) {
+  window.electronAPI.onTriggerSave(() => doSavePDF());
+}
+
+// ── Shop edit ───────────────────────────────────────────────────────
 let shopEditing = false;
 function toggleShopEdit() {
   shopEditing = !shopEditing;
@@ -567,7 +624,7 @@ function updateShop() {
   renderPreview();
 }
 
-// ── items ───────────────────────────────────────────────────────────
+// ── Items ───────────────────────────────────────────────────────────
 function addItem() {
   const id = ++itemId;
   items.push({ id, desc:'', qty:1, rate:'', gst:0 });
@@ -585,10 +642,9 @@ function updateItem(id, field, val) {
 function renderItems() {
   const sugg = billType==='sales' ? SALES_SUGG : billType==='service' ? SERVICE_SUGG : [...SERVICE_SUGG,...SALES_SUGG];
   const dl = sugg.map(s=>`<option value="${s}">`).join('');
-  const list = document.getElementById('items-list');
-  list.innerHTML = items.map((item,idx) => {
-    const amt = (parseFloat(item.qty)||0)*(parseFloat(item.rate)||0);
-    const gstAmt = amt*(parseFloat(item.gst)/100);
+  document.getElementById('items-list').innerHTML = items.map((item,idx) => {
+    const amt    = (parseFloat(item.qty)||0) * (parseFloat(item.rate)||0);
+    const gstAmt = amt * (parseFloat(item.gst)/100);
     return `
     <datalist id="sg-${item.id}">${dl}</datalist>
     <div class="item-row">
@@ -610,36 +666,36 @@ function renderItems() {
 }
 function refreshItemSuggestions() { renderItems(); }
 
-// ── calculations ────────────────────────────────────────────────────
+// ── Calculations ────────────────────────────────────────────────────
 function recalc() {
   const rows = items.map(i => {
     const qty = parseFloat(i.qty)||0, rate = parseFloat(i.rate)||0;
-    const taxable = qty*rate;
-    const gstAmt  = taxable*(parseFloat(i.gst)/100);
+    const taxable = qty * rate;
+    const gstAmt  = taxable * (parseFloat(i.gst)/100);
     return { taxable, gstAmt, total: taxable+gstAmt };
   });
-  const sub   = rows.reduce((s,r)=>s+r.taxable,0);
-  const gst   = rows.reduce((s,r)=>s+r.gstAmt,0);
+  const sub   = rows.reduce((s,r)=>s+r.taxable, 0);
+  const gst   = rows.reduce((s,r)=>s+r.gstAmt,  0);
   const disc  = Math.min(parseFloat(v('discount'))||0, sub+gst);
-  const grand = sub+gst-disc;
+  const grand = sub + gst - disc;
   const paid  = parseFloat(v('amt-paid'))||0;
-  const bal   = grand-paid;
+  const bal   = grand - paid;
 
   document.getElementById('t-sub').textContent   = fmt(sub);
   document.getElementById('t-gst').textContent   = fmt(gst);
   document.getElementById('t-grand').textContent = fmt(grand);
 
   const discRow = document.getElementById('t-disc-row');
-  discRow.style.display = disc>0 ? 'flex' : 'none';
-  document.getElementById('t-disc').textContent  = `– ${fmt(disc)}`;
+  discRow.style.display = disc > 0 ? 'flex' : 'none';
+  document.getElementById('t-disc').textContent = `– ${fmt(disc)}`;
 
   const paidRow = document.getElementById('t-paid-row');
-  paidRow.style.display = paid>0 ? 'flex' : 'none';
+  paidRow.style.display = paid > 0 ? 'flex' : 'none';
   document.getElementById('t-paid-lbl').textContent = `Paid (${v('pay-mode')})`;
-  document.getElementById('t-paid').textContent  = fmt(paid);
+  document.getElementById('t-paid').textContent = fmt(paid);
 
   const balRow = document.getElementById('t-bal-row');
-  balRow.style.display = paid>0 ? 'flex' : 'none';
+  balRow.style.display = paid > 0 ? 'flex' : 'none';
   if (bal < 0) {
     balRow.className = 'trow paid';
     document.getElementById('t-bal-label').textContent = '↩ Return to Customer';
@@ -653,7 +709,7 @@ function recalc() {
   renderPreview();
 }
 
-// ── preview render ──────────────────────────────────────────────────
+// ── Preview render ──────────────────────────────────────────────────
 function renderPreview() {
   const shop    = getShop();
   const invNo   = v('inv-no');
@@ -662,7 +718,6 @@ function renderPreview() {
   const cname   = v('c-name') || 'Customer Name';
   const caddr   = v('c-addr');
   const cphone  = v('c-phone');
-  const cemail  = v('c-email');
   const cplace  = v('c-place');
   const payMode = v('pay-mode');
   const notes   = v('notes');
@@ -675,8 +730,7 @@ function renderPreview() {
   document.getElementById('inv-signame').textContent  = shop.name;
   document.getElementById('inv-contact').innerHTML =
     `📍 ${shop.addr}, ${shop.city}<br>📞 ${shop.ph1}${shop.ph2?' | '+shop.ph2:''}${shop.email?' &nbsp;✉ '+shop.email:''}${shop.gstin?' | GSTIN: '+shop.gstin:''}`;
-  document.getElementById('inv-bot-l').textContent =
-    `📞 ${shop.ph1}${shop.ph2?' | '+shop.ph2:''} · ${shop.addr}, ${shop.city}`;
+
 
   document.getElementById('inv-no-disp').textContent = invNo;
   document.getElementById('inv-meta').innerHTML =
@@ -687,10 +741,8 @@ function renderPreview() {
   chipEl.textContent = labels[billType];
   chipEl.className   = `inv-chip chip-${billType}`;
 
-  // ── Billed To — order: Name, Address, Phone, Email, Place ──
+  // Billed To
   document.getElementById('inv-cname').textContent = cname;
-
-  // Address line directly below name
   const addrEl = document.getElementById('inv-caddr');
   if (caddr && caddr.trim()) {
     addrEl.innerHTML = escHtml(caddr);
@@ -699,15 +751,11 @@ function renderPreview() {
     addrEl.innerHTML = '';
     addrEl.style.display = 'none';
   }
-
-  // Phone and Place only — no email in Billed To
   document.getElementById('inv-cdet').innerHTML =
-    [
-      cphone ? `📞 ${escHtml(cphone)}` : null,
-      cplace ? `📍 ${escHtml(cplace)}` : null
-    ].filter(Boolean).join('<br>');
+    [cphone ? `📞 ${escHtml(cphone)}` : null,
+     cplace ? `📍 ${escHtml(cplace)}` : null].filter(Boolean).join('<br>');
 
-  // Invoice info box
+  // Invoice info
   document.getElementById('inv-info').innerHTML =
     `<strong>Invoice No:</strong> ${invNo}<br><strong>Date:</strong> ${fmtDate(date)}<br><strong>Payment:</strong> ${payMode}${due?'<br><strong>Due:</strong> '+fmtDate(due):''}`;
 
@@ -720,10 +768,10 @@ function renderPreview() {
         <div class="inv-ibox full" style="margin-bottom:11px">
           <div class="inv-ilbl">Device Details</div>
           <div class="dev-grid">
-            ${brand ?`<div><div class="dkey">Brand</div><div class="dval">${escHtml(brand)}</div></div>`:''}
-            ${model ?`<div><div class="dkey">Model</div><div class="dval">${escHtml(model)}</div></div>`:''}
-            ${serial?`<div><div class="dkey">Serial No.</div><div class="dval">${escHtml(serial)}</div></div>`:''}
-            ${prob  ?`<div><div class="dkey">Reported Issue</div><div class="dval">${escHtml(prob)}</div></div>`:''}
+            ${brand  ? `<div><div class="dkey">Brand</div><div class="dval">${escHtml(brand)}</div></div>` : ''}
+            ${model  ? `<div><div class="dkey">Model</div><div class="dval">${escHtml(model)}</div></div>` : ''}
+            ${serial ? `<div><div class="dkey">Serial No.</div><div class="dval">${escHtml(serial)}</div></div>` : ''}
+            ${prob   ? `<div><div class="dkey">Reported Issue</div><div class="dval">${escHtml(prob)}</div></div>` : ''}
           </div>
         </div>`;
     } else { devWrap.innerHTML = ''; }
@@ -735,38 +783,37 @@ function renderPreview() {
     const taxable = qty*rate, gstAmt = taxable*(parseFloat(i.gst)/100);
     return {...i, taxable, gstAmt, total: taxable+gstAmt};
   });
-  const sub   = rows.reduce((s,r)=>s+r.taxable,0);
-  const gst   = rows.reduce((s,r)=>s+r.gstAmt,0);
+  const sub   = rows.reduce((s,r)=>s+r.taxable, 0);
+  const gst   = rows.reduce((s,r)=>s+r.gstAmt,  0);
   const disc  = Math.min(parseFloat(v('discount'))||0, sub+gst);
-  const grand = sub+gst-disc;
+  const grand = sub + gst - disc;
   const paid  = parseFloat(v('amt-paid'))||0;
-  const bal   = grand-paid;
+  const bal   = grand - paid;
 
-  document.getElementById('inv-tbody').innerHTML = rows.map((r,i)=>`
+  document.getElementById('inv-tbody').innerHTML = rows.map((r,i) => `
     <tr>
       <td style="color:#94a3b8;font-size:10px">${i+1}</td>
       <td><span class="iname">${r.desc ? escHtml(r.desc) : '<em style="color:#ccc">—</em>'}</span></td>
       <td class="r">${r.qty}</td>
       <td class="r">${r.rate ? fmt(parseFloat(r.rate)) : '—'}</td>
-      <td class="r" style="color:var(--gray-400)">${r.gst}%</td>
-      <td class="r" style="color:var(--gray-500)">${r.rate ? fmt(r.gstAmt) : '—'}</td>
+      <td class="r" style="color:#94a3b8">${r.gst}%</td>
+      <td class="r" style="color:#64748b">${r.rate ? fmt(r.gstAmt) : '—'}</td>
       <td class="r" style="font-weight:700">${r.rate ? fmt(r.total) : '—'}</td>
     </tr>`).join('');
 
-  let totsHtml = `
+  document.getElementById('inv-tots').innerHTML = `
     <div class="inv-tr"><span>Subtotal (excl. GST)</span><span>${fmt(sub)}</span></div>
     <div class="inv-tr"><span>Total GST</span><span>${fmt(gst)}</span></div>
-    ${disc>0?`<div class="inv-tr disc"><span>Discount</span><span>– ${fmt(disc)}</span></div>`:''}
+    ${disc>0 ? `<div class="inv-tr disc"><span>Discount</span><span>– ${fmt(disc)}</span></div>` : ''}
     <div class="inv-tr grand"><span>Grand Total</span><span>${fmt(grand)}</span></div>
-    ${paid>0?`<div class="inv-tr paid"><span>Paid (${payMode})</span><span>${fmt(paid)}</span></div>`:''}
-    ${paid>0 && bal<0 ? `<div class="inv-tr paid"><span>↩ Return to Customer</span><span>${fmt(Math.abs(bal))}</span></div>`:''}
-    ${paid>0 && bal>0 ? `<div class="inv-tr bal"><span>Balance Due</span><span>${fmt(bal)}</span></div>`:''}`;
-  document.getElementById('inv-tots').innerHTML = totsHtml;
+    ${paid>0 ? `<div class="inv-tr paid"><span>Paid (${payMode})</span><span>${fmt(paid)}</span></div>` : ''}
+    ${paid>0 && bal<0 ? `<div class="inv-tr paid"><span>Balance</span><span>${fmt(Math.abs(bal))}</span></div>` : ''}
+    ${paid>0 && bal>0 ? `<div class="inv-tr bal"><span>Balance Due</span><span>${fmt(bal)}</span></div>` : ''}`;
 
   document.getElementById('inv-notes').innerHTML = escHtml(notes).replace(/\n/g,'<br>');
 }
 
-// ── helpers ─────────────────────────────────────────────────────────
+// ── Helpers ─────────────────────────────────────────────────────────
 function v(id) { const el = document.getElementById(id); return el ? el.value : ''; }
 function getShop() {
   return {
@@ -775,6 +822,7 @@ function getShop() {
     addr:    v('s-addr')    || 'YMCA Road, Calicut',
     city:    v('s-city')    || 'Kozhikode, Kerala',
     ph1:     v('s-ph1')     || '8137 088990',
+    ph2:     v('s-ph2')     || '',
     email:   v('s-email'),
     gstin:   v('s-gstin'),
   };
