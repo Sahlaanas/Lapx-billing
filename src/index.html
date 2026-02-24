@@ -210,7 +210,6 @@
 <!-- TOPBAR -->
 <div class="topbar">
   <div class="brand">
-    <div class="brand-ls">LS</div>
     <div>
       <div class="brand-title">LAP-X SOLUTIONS</div>
       <div class="brand-sub">Billing & Invoice Software</div>
@@ -250,7 +249,7 @@
             <div id="d-addr">YMCA Road, Calicut, Kozhikode, Kerala</div>
           </div>
           <div>
-            <div id="d-phone">📞 8137 088990 | 9497632116</div>
+            <div id="d-phone">📞 8137 088990</div>
             <div id="d-email"></div>
             <div id="d-gstin"></div>
           </div>
@@ -396,7 +395,7 @@ Payment accepted: Cash / UPI / Bank Transfer.</textarea>
             <div class="inv-stagline" id="inv-stagline">Multi Brand Laptop Service Centre</div>
             <div class="inv-contact" id="inv-contact">
               📍 YMCA Road, Calicut, Kozhikode, Kerala<br>
-              📞 8137 088990 | 9497632116
+              📞 8137 088990
             </div>
           </div>
           <div class="inv-dr">
@@ -466,7 +465,7 @@ Payment accepted: Cash / UPI / Bank Transfer.</textarea>
 
       <!-- Bottom bar -->
       <div class="inv-bot">
-        <div class="inv-bl" id="inv-bot-l">📞 8137 088990 | 9497632116 · YMCA Road, Calicut, Kozhikode, Kerala</div>
+        <div class="inv-bl" id="inv-bot-l">📞 8137 088990 · YMCA Road, Calicut, Kozhikode, Kerala</div>
         <div class="inv-br">★ THANK YOU FOR YOUR BUSINESS ★</div>
       </div>
 
@@ -480,13 +479,12 @@ let billType = 'service';
 let itemId = 0;
 let items = [];
 
-const SERVICE_SUGG = [
-  'Chip Level Service','Screen Replacement','Keyboard Repair','Touchpad Repair',
-  'SSD Upgrade','RAM Upgrade','OS Installation (Windows)','OS Installation (Linux)',
-  'Software Support','Data Recovery','Battery Replacement','Motherboard Repair',
+const SERVICE_SUGG = ['Dead Condition','Not working',
+  'Chip Level Service','Screen Replacement','Keyboard Replacement','Touchpad not working',
+  'SSD Upgrade and Formatting','RAM Upgrade','OS Installation (Windows)','OS Installation (Linux)','Data Recovery','Battery Replacement','Motherboard Repair', 'Motherboard Replacement',
   'Charging Port Repair','DC Jack Repair','Cooling Fan Replacement',
   'Thermal Paste Application','Virus / Malware Removal','BIOS Flashing',
-  'Hinge Repair','Speaker Replacement','Liquid Damage Repair','Network Card Repair'
+  'Hinge Repair','Speaker Replacement','Liquid Damage Repair','Network Card Repair(Wifi)','Battery not charging', 'Keyboard not working', 'Screen flickering','Dim screen issue','Adapter not working', 'Restarting problem','On-off issue','CPU fan not working','Overheating issue','Blue screen error','Slow performance'
 ];
 const SALES_SUGG = [
   'DDR4 RAM 8GB','DDR4 RAM 16GB','DDR5 RAM 8GB','SSD 256GB','SSD 512GB','SSD 1TB',
@@ -781,7 +779,6 @@ function getShop() {
     addr:    v('s-addr')    || 'YMCA Road, Calicut',
     city:    v('s-city')    || 'Kozhikode, Kerala',
     ph1:     v('s-ph1')     || '8137 088990',
-    ph2:     v('s-ph2')     || '9497632116',
     email:   v('s-email'),
     gstin:   v('s-gstin'),
   };
